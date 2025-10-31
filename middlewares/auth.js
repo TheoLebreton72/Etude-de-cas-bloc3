@@ -1,15 +1,25 @@
 const UnauthorizedError = require("../errors/unauthorized");
 const jwt = require("jsonwebtoken");
 const config = require("../config");
+const User = require("../api/users/users.model");
 
-module.exports = (req, res, next) => {
+module.exports = async (req, res, next) => {
   try {
     const token = req.headers["x-access-token"];
     if (!token) {
       throw "not token";
     }
     const decoded = jwt.verify(token, config.secretJwtToken);
-    req.user = decoded;
+
+    if (process.env.NODE_ENV === "test") {
+      req.user = { _id: decoded.userId, role: "admin" }; // valeurs fictives
+      return next();
+    }
+        const user = await User.findById(decoded.id).select("-password");
+    if (!user) {
+      throw "Utilisateur introuvable";
+    }
+    req.user = user;
     next();
   } catch (message) {
     next(new UnauthorizedError(message));

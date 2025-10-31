@@ -8,4 +8,6 @@ router.post("/", usersController.create);
 router.put("/:id", usersController.update);
 router.delete("/:id", usersController.delete);
 
+router.get("/:userId/articles", usersController.getUserArticles);
+
 module.exports = router;
