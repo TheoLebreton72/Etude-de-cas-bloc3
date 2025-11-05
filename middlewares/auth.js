@@ -15,11 +15,14 @@ module.exports = async (req, res, next) => {
       req.user = { _id: decoded.userId, role: "admin" }; // valeurs fictives
       return next();
     }
-        const user = await User.findById(decoded.id).select("-password");
+        const user = await User.findById(decoded.userId).select("-password");
+        
     if (!user) {
       throw "Utilisateur introuvable";
     }
     req.user = user;
+    console.log(user);
+    
     next();
   } catch (message) {
     next(new UnauthorizedError(message));

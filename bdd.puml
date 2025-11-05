@@ -1,0 +1,37 @@
+@startuml
+title Diagramme de classes - Modèles User et Article
+
+' === Énumérations ===
+enum Role {
+  admin
+  member
+}
+
+enum Status {
+  draft
+  published
+}
+
+' === Classe User ===
+class User {
+  - name : String
+  - password : String
+  - email : String
+  - date : Date
+  - role : Role
+  - age : Number
+}
+
+
+
+' === Classe Article ===
+class Article {
+  - title : String
+  - content : String
+  - status : Status
+}
+
+' === Relations ===
+User "1" <-- "0..*" Article : écrit 
+
+@enduml

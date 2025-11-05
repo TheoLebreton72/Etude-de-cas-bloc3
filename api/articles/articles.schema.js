@@ -8,7 +8,11 @@ const articleSchema = Schema({
     ref: "User",
   },
   status: {
-    enum: ['draft', 'published'],
+    type: String,
+    enum: {
+      values: ['draft', 'published'],
+      message: "{VALUE} inconnue",
+    }
   }
 });
 
